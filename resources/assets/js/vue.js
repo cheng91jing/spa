@@ -4,6 +4,9 @@ import router from './routes';
 
 Vue.use(VueRouter);
 
+import App from './components/App';
+
+Vue.component('app', App);
 
 //Vue.component('example-component', require('./components/home.vue'));
 

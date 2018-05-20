@@ -20,9 +20,10 @@
 <script>
     export default {
         mounted() {
-            axios.get('/api/posts/' + this.$route.params.id).then(response => {
-                this.post = response.data
-            })
+            axios.get('/api/posts/' + this.$route.params.id)
+                .then(response => {
+                    this.post = response.data
+                })
         },
         data(){
             return {

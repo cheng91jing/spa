@@ -1,0 +1,23 @@
+<template>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark mb-3">
+        <div class="container">
+            <router-link class="navbar-brand mb-0 h1" to="/">aa</router-link>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                </ul>
+                <div class="navbar-nav ml-auto">
+                    <router-link to="/about" class="nav-item nav-link">About</router-link>
+                </div>
+            </div>
+        </div>
+    </nav>
+</template>
+
+<script>
+    export default {
+    }
+</script>
