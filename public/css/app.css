@@ -10417,12 +10417,3 @@ a.text-dark:focus {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
-.bs-callout h4 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
-
-.bs-callout-danger h4 {
-  color: #ce4844;
-}
-
