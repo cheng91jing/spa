@@ -9,9 +9,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                 </ul>
-                <div class="navbar-nav ml-auto">
-                    <router-link to="/login" class="nav-item nav-link">登陆</router-link>
-                    <router-link to="/register" class="nav-item nav-link">注册</router-link>
+                <div class="navbar-nav ml-auto" >
+                    <router-link to="/login" v-if="!user.authenticated" class="nav-item nav-link">登陆</router-link>
+                    <router-link to="/register" v-if="!user.authenticated" class="nav-item nav-link">注册</router-link>
+                    <router-link to="/profile" v-if="user.authenticated" class="nav-item nav-link">个人中心</router-link>
+                    <a href="#" v-if="user.authenticated" class="nav-item nav-link">退出登陆</a>
                 </div>
             </div>
         </div>
@@ -19,6 +21,13 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
+
     export default {
+        computed:{
+            ...mapState({
+                user: state => state.AuthUser
+            })
+        }
     }
 </script>

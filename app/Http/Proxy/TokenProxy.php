@@ -47,7 +47,7 @@ class TokenProxy
             'client_secret' => env('PASSWORD_CLIENT_SECRET'),
             //'scope'         => '',
         ]);
-        $response = $this->http->post('http://spa.homestead.test/oauth/token', [
+        $response = $this->http->post(url('/oauth/token'), [
             'form_params' => $data,
         ]);
 

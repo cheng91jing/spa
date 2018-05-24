@@ -1,24 +1,38 @@
-import VueRouter from "vue-router";
+import VueRouter from "vue-router"
 
-Vue.use(VueRouter);
+import store from './store/index'
+
+import router from './routes'
+
+import App from './components/App'
+
+import Passport from './helpers/passport'
 
 // import zh_CN from 'vee-validate/dist/locale/zh_CN';
-import zh_CN from './locale/VeeValidate/zh-CN';
+import zh_CN from './locale/VeeValidate/zh-CN'
 
-import VeeValidate, { Validator } from 'vee-validate';
+import VeeValidate, { Validator } from 'vee-validate'
 
-Validator.localize('zh-CN', zh_CN);
+Validator.localize('zh-CN', zh_CN)
 
-Vue.use(VeeValidate);
+axios.interceptors.request.use(function (config) {
+    if(Passport.getToken()){
+        config.headers['Authorization'] = 'Bearer ' + Passport.getToken()
+    }
+    return config;
+}, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+});
 
-import App from './components/App';
+Vue.use(VeeValidate)
 
-Vue.component('app', App);
+Vue.use(VueRouter)
 
-//Vue.component('example-component', require('./components/home.vue'));
-import router from './routes';
+Vue.component('app', App)
 
 new Vue({
     el: '#app',
-    router
+    router,
+    store
 });
