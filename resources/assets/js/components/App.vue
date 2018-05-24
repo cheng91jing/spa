@@ -9,7 +9,13 @@
 
 <script>
     import TopMenu from './common/TopMenu'
+    import Passport from './../helpers/passport'
     export default {
+        created(){
+            if(Passport.getToken()){
+                this.$store.dispatch('setAuthUser')
+            }
+        },
         components :{
             TopMenu
         }

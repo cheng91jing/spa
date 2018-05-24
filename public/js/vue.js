@@ -4210,6 +4210,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var routes = [{
     path: '/',
+    name: 'home',
     component: __webpack_require__(11),
     meta: {}
 }, {
@@ -4225,12 +4226,12 @@ var routes = [{
     path: '/register',
     name: 'register',
     component: __webpack_require__(23),
-    meta: {}
+    meta: { requiresGuest: true }
 }, {
     path: '/login',
     name: 'login',
     component: __webpack_require__(34),
-    meta: {}
+    meta: { requiresGuest: true }
 }, {
     path: '/confirm',
     name: 'confirm',
@@ -4249,10 +4250,13 @@ var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
 });
 router.beforeEach(function (to, from, next) {
     if (to.meta.requiresAuth) {
-        if (__WEBPACK_IMPORTED_MODULE_1__store_index__["a" /* default */].state.authenticated || __WEBPACK_IMPORTED_MODULE_2__helpers_passport__["a" /* default */].getToken()) {
-            return next();
-        } else {
+        if (!__WEBPACK_IMPORTED_MODULE_1__store_index__["a" /* default */].state.authenticated && !__WEBPACK_IMPORTED_MODULE_2__helpers_passport__["a" /* default */].getToken()) {
             return next({ 'name': 'login' });
+        }
+    }
+    if (to.meta.requiresGuest) {
+        if (__WEBPACK_IMPORTED_MODULE_1__store_index__["a" /* default */].state.authenticated || __WEBPACK_IMPORTED_MODULE_2__helpers_passport__["a" /* default */].getToken()) {
+            return next({ 'name': 'home' });
         }
     }
     return next();
@@ -5568,7 +5572,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -5632,12 +5636,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         login: function login() {
             var _this = this;
 
-            var formData = {
-                email: this.email,
-                password: this.password
-            };
-            this.$store.dispatch('loginRequest', formData).then(function (response) {
-                _this.$router.push({ name: 'profile' });
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    var formData = {
+                        email: _this.email,
+                        password: _this.password
+                    };
+                    _this.$store.dispatch('loginRequest', formData).then(function (response) {
+                        _this.$router.push({ name: 'profile' });
+                    });
+                }
             });
         }
     }
@@ -6159,6 +6167,7 @@ exports.push([module.i, "\n.fade-enter-active, .fade-leave-active {\n    -webkit
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_TopMenu__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_TopMenu___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__common_TopMenu__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_passport__ = __webpack_require__(6);
 //
 //
 //
@@ -6168,9 +6177,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    created: function created() {
+        if (__WEBPACK_IMPORTED_MODULE_1__helpers_passport__["a" /* default */].getToken()) {
+            this.$store.dispatch('setAuthUser');
+        }
+    },
+
     components: {
         TopMenu: __WEBPACK_IMPORTED_MODULE_0__common_TopMenu___default.a
     }
