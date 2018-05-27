@@ -19,12 +19,13 @@
 
             <div class="col-md-7" >
                 <input v-model="password"
-                       :class="{'is-invalid' : errors.has('password')}"
+                       :class="{'is-invalid' : errors.has('password') || bag.has('password:auth')}"
                        v-validate="{rules: {required: true, min:6}}"
                        data-vv-as="密码"
                        id="password" type="password" class="form-control" name="password" required>
                 <span class="invalid-feedback">
-                    <strong>{{ errors.first('password') }}</strong>
+                    <strong v-show="errors.has('password')" >{{ errors.first('password') }}</strong>
+                    <strong v-show="mismatchError" >{{ bag.first('password:auth') }}</strong>
                 </span>
             </div>
         </div>
@@ -39,11 +40,26 @@
 </template>
 
 <script>
+    import {ErrorBag} from 'vee-validate'
+
     export default {
         data() {
             return {
                 email: '',
                 password: '',
+                bag: new ErrorBag()
+            }
+        },
+        computed:{
+            mismatchError(){
+                return this.bag.has('password:auth') && !this.errors.has('password')
+            }
+        },
+        watch: {
+            password() {
+                if (this.bag.has('password:auth')) {
+                    this.bag.remove('password');
+                }
             }
         },
         methods: {
@@ -56,6 +72,10 @@
                         }
                         this.$store.dispatch('loginRequest', formData).then(response => {
                             this.$router.push({name: 'profile'})
+                        }).catch(error => {
+                            if(error.response.status === 421)
+                                this.bag.add('password', '邮箱密码不相符', 'auth')
+
                         })
                     }
                 })

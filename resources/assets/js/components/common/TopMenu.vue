@@ -13,7 +13,7 @@
                     <router-link to="/login" v-if="!user.authenticated" class="nav-item nav-link">登陆</router-link>
                     <router-link to="/register" v-if="!user.authenticated" class="nav-item nav-link">注册</router-link>
                     <router-link to="/profile" v-if="user.authenticated" class="nav-item nav-link">个人中心</router-link>
-                    <a href="#" v-if="user.authenticated" class="nav-item nav-link">退出登陆</a>
+                    <a href="#" @click.prevent="logout" v-if="user.authenticated" class="nav-item nav-link">退出登陆</a>
                 </div>
             </div>
         </div>
@@ -28,6 +28,15 @@
             ...mapState({
                 user: state => state.AuthUser
             })
+        },
+        methods:{
+            logout(){
+                this.$store.dispatch('logoutRequest').then(response => {
+                    this.$router.push({name: 'home'})
+                }).catch(error => {
+                    console.log(error.response)
+                })
+            }
         }
     }
 </script>

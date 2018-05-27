@@ -13,7 +13,11 @@
     export default {
         created(){
             if(Passport.getToken()){
-                this.$store.dispatch('setAuthUser')
+                this.$store.dispatch('setAuthUser').then(response => {
+                    if(this.$route.meta.requiresGuest && this.$store.state.AuthUser.authenticated){
+                        this.$router.push({name: 'home'});
+                    }
+                })
             }
         },
         components :{

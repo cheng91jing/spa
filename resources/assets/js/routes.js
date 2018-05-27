@@ -54,12 +54,12 @@ const router = new VueRouter({
 })
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth) {
-        if (!Store.state.authenticated && !Passport.getToken()) {
+        if (!Store.state.AuthUser.authenticated /*&& !Passport.getToken()*/) {
             return next({'name': 'login'})
         }
     }
     if (to.meta.requiresGuest) {
-        if (Store.state.authenticated || Passport.getToken()) {
+        if (Store.state.AuthUser.authenticated /*|| Passport.getToken()*/) {
             return next({'name': 'home'})
         }
     }
