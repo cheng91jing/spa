@@ -1,10 +1,10 @@
 <template>
-    <form>
-        <div class="form-group row" >
+    <form @submit.prevent="updateProfile">
+        <div class="form-group row">
             <label for="name" class="col-md-3 col-form-label text-md-right">用户名</label>
 
             <div class="col-md-7">
-                <input v-model="user.name"
+                <input v-model="name"
                        v-validate="{rules: {required: true}}"
                        :class="{'is-invalid' : errors.has('name')}"
                        data-vv-as="用户名"
@@ -14,11 +14,11 @@
                 </span>
             </div>
         </div>
-        <div class="form-group row" >
+        <div class="form-group row">
             <label for="email" class="col-md-3 col-form-label text-md-right">邮箱地址</label>
 
             <div class="col-md-7">
-                <input v-model="user.email"
+                <input v-model="email"
                        v-validate="{rules: {required: true, email:true}}"
                        :class="{'is-invalid' : errors.has('email')}"
                        data-vv-as="邮箱地址"
@@ -39,12 +39,29 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
     export default {
-        computed:{
-            ...mapState({
-                user: state => state.AuthUser
-            })
+        data(){
+            return {
+                name: this.$store.state.AuthUser.name,
+                email:this.$store.state.AuthUser.email
+            }
+        },
+        computed: {
+            //name: () => this.$store.state.AuthUser.name,
+            //email: () => this.$store.state.AuthUser.email
+        },
+        methods: {
+            updateProfile() {
+                const formData = {
+                    name: this.name,
+                    email: this.email
+                }
+                this.$store.dispatch('updateProfileRequest', formData).then(res => {
+                    this.$router.push({name: 'profile'})
+                }).catch(error => {
+
+                })
+            }
         }
     }
 </script>

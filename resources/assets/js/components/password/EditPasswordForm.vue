@@ -1,8 +1,8 @@
 <template>
-    <form>
-        <div class="form-group row" >
+    <form @submit.prevent="updatePassword">
+        <div class="form-group row">
             <label for="password" class="col-md-3 col-form-label text-md-right">密码</label>
-            <div class="col-md-7" >
+            <div class="col-md-7">
                 <input v-model="password"
                        :class="{'is-invalid' : errors.has('password')}"
                        v-validate="{rules: {required: true, min:6}}"
@@ -13,9 +13,9 @@
                 </span>
             </div>
         </div>
-        <div class="form-group row" >
+        <div class="form-group row">
             <label for="password-confirm" class="col-md-3 col-form-label text-md-right">确认密码</label>
-            <div class="col-md-7" >
+            <div class="col-md-7">
                 <input id="password-confirm"
                        :class="{'is-invalid' : errors.has('password_confirmation')}"
                        v-validate="{rules: {required: true, min:6, confirmed: 'password'}}"
@@ -39,9 +39,25 @@
 
 <script>
     export default {
-        data(){
+        data() {
             return {
                 password: null
+            }
+        },
+        methods: {
+            updatePassword(){
+                this.$validator.validateAll().then(result => {
+                    if(result){
+                        const formData = {
+                            password: this.password,
+                        }
+                        this.$store.dispatch('updatePasswordRequest', formData).then(res => {
+                            //this.$router.push({name: 'profile'})
+                        }).catch(error => {
+                            //
+                        })
+                    }
+                })
             }
         }
     }

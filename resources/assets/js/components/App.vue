@@ -1,6 +1,7 @@
 <template>
     <div>
         <top-menu></top-menu>
+        <Notification></Notification>
         <transition name="fade" mode="out-in">
             <router-view></router-view>
         </transition>
@@ -9,6 +10,7 @@
 
 <script>
     import TopMenu from './common/TopMenu'
+    import Notification from './common/Notification'
     import Passport from './../helpers/passport'
     export default {
         created(){
@@ -21,7 +23,8 @@
             }
         },
         components :{
-            TopMenu
+            TopMenu,
+            Notification
         }
     }
 </script>
